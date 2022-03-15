@@ -6,7 +6,7 @@ class DataLoader {
 
 	const COL_LANGUAGE = 'language';
 
-	private array $data;
+	private ?array $data = null;
 
 	public function __construct(
 		private string $directoryPath
@@ -44,6 +44,10 @@ class DataLoader {
 		while (! feof($file)) {
 			$row = fgetcsv($file, 0, ',');
 
+			if (!$row) {
+				continue;
+			}
+
 			$languageColumn = $columnsByName[self::COL_LANGUAGE];
 			$language       = $row[$languageColumn] ?? false;
 			$languageData   = [];
@@ -60,6 +64,8 @@ class DataLoader {
 		}
 
 		$this->data[$version] = $data;
+
+		fclose($file);
 	}
 
 	public function getData(): array {
