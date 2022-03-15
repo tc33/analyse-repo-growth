@@ -23,7 +23,14 @@ do
   cloc --exclude-dir=.git --fullpath --not-match-d="wp-content/(plugins|themes)" --hide-rate --csv --report-file=../data/$i.csv .
 done
 
+# Generate the reports
+printf "Generating reports\n"
+cd ../reporting
+php generate-reports.php
+
 # Clean up
 cd ..
 printf "Deleting WordPress\n"
 rm -rf wordpress
+printf "Deleting data files\n"
+rm -rf data
