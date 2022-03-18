@@ -35,7 +35,7 @@ class VersionsLinesChart implements Report {
 			$counts['Other'][] = $count;
 		}
 
-		file_put_contents(Report::REPORTS_DIR . '/versions-lines.chart.html', $this->chartSource($versions, $counts));
+		file_put_contents(Report::REPORTS_DIR . '/versions-lines-chart.html', $this->chartSource($versions, $counts));
 	}
 
 	private function languages(array $data): array {

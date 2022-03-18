@@ -8,7 +8,7 @@ class TotalLinesChart implements Report {
 		$versions    = $this->versions($data);
 		$totalCounts = array_column( array_column($data, 'SUM'), 'code' );
 
-		file_put_contents(Report::REPORTS_DIR . '/total-lines.chart.html', $this->chartSource($versions, $totalCounts));
+		file_put_contents(Report::REPORTS_DIR . '/total-lines-chart.html', $this->chartSource($versions, $totalCounts));
 	}
 
 	private function versions(array $data): array {
