@@ -16,6 +16,9 @@ echo "version,date" >> ../versions.csv
 # Get list of major versions matching pattern x.x
 versions=( $(git tag -l "[0-9].[0-9]") )
 
+ignore_dirs=".git|wp-content/plugins|wp-content/themes|wp-includes/js/jquery|wp-includes/js/tinymce|wp-includes/js/dist/vendor"
+ignore_files=".min.js|.min.css"
+
 # Checkout each version and count LOC
 for i in "${versions[@]}"
 do
@@ -25,7 +28,7 @@ do
   printf "Counting lines of code in $i\n"
 
   # Perform count excluding default plugins and themes
-  cloc --exclude-dir=.git --fullpath --not-match-d="wp-content/(plugins|themes)" --hide-rate --csv --report-file=../data/$i.csv .
+  cloc --fullpath --not-match-d="($ignore_dirs)" --not-match-f="($ignore_files)" --hide-rate --csv --report-file=../data/$i.csv .
 
   # Get the date of this version
   printf "Saving release date of $i\n"
@@ -41,8 +44,8 @@ php generate-reports.php
 # Clean up
 cd ..
 printf "Deleting WordPress\n"
-rm -rf wordpress
+#rm -rf wordpress
 printf "Deleting data files\n"
-rm -rf data
+#rm -rf data
 #printf "Deleting versions file\n"
 #rm versions.csv
