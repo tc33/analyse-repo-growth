@@ -12,7 +12,7 @@ class LinesByDateChart implements Report {
 		$totalCounts = array_combine($versions, $totalCounts);
 		$dates       = $this->versionDates();
 
-		file_put_contents(Report::REPORTS_DIR . '/lines-by-version-chart.html', $this->chartSource($dates, $totalCounts));
+		file_put_contents(Report::REPORTS_DIR . '/lines-by-date-chart.html', $this->chartSource($dates, $totalCounts));
 	}
 
 	private function versions(array $data): array {
@@ -49,9 +49,9 @@ class LinesByDateChart implements Report {
 
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-		<canvas id="lines-by-dates-chart" width="400" height="400"></canvas>
+		<canvas id="lines-by-date-chart" width="400" height="400"></canvas>
 		<script>
-			var ctx = document.getElementById('lines-by-dates-chart');
+			var ctx = document.getElementById('lines-by-date-chart');
 			var myChart = new Chart(ctx, {
 				type:    'line',
 				data:    {
@@ -77,9 +77,6 @@ class LinesByDateChart implements Report {
 					}
 				}
 			});
-			const footer = (tooltipItems) => {
-				return 'Version: ';
-			};
 		</script>
 
 		<?php

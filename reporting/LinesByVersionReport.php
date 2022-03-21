@@ -16,11 +16,7 @@ class LinesByVersionReport implements Report {
 			$rows[] = $row;
 		}
 
-		if (! file_exists(Report::REPORTS_DIR)) {
-			mkdir(Report::REPORTS_DIR);
-		}
-
-		$csv = new CSVGenerator(Report::REPORTS_DIR . 'loc-by-version.csv');
+		$csv = new CSVGenerator(Report::REPORTS_DIR . 'lines-by-version.csv');
 		$csv->setHeadings(array_merge(['Version'], $languages));
 		$csv->setRows($rows);
 		$csv->save();

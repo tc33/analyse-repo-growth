@@ -2,7 +2,7 @@
 
 namespace TC33\AnalyseRepoGrowth;
 
-class VersionsLinesChart implements Report {
+class LinesByLanguageChart implements Report {
 
 	const BG_COLOURS      = [
 		'rgba(255, 99, 132, 0.2)',
@@ -37,7 +37,7 @@ class VersionsLinesChart implements Report {
 			$counts['Other'][] = $count;
 		}
 
-		file_put_contents(Report::REPORTS_DIR . '/versions-lines-chart.html', $this->chartSource($versions, $counts));
+		file_put_contents(Report::REPORTS_DIR . '/lines-by-language-chart.html', $this->chartSource($versions, $counts));
 	}
 
 	private function languages(array $data): array {
@@ -62,9 +62,9 @@ class VersionsLinesChart implements Report {
 		?>
 
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
-		<canvas id="versions-lines-chart" width="400" height="400"></canvas>
+		<canvas id="lines-by-language-chart" width="400" height="400"></canvas>
 		<script>
-			var ctx = document.getElementById('versions-lines-chart');
+			var ctx = document.getElementById('lines-by-language-chart');
 			var myChart = new Chart(ctx, {
 				type:    'bar',
 				data:    {
@@ -88,12 +88,7 @@ class VersionsLinesChart implements Report {
 						},
 						y:     {
 							stacked: true
-						},
-						yAxes: [{
-							ticks: {
-								beginAtZero: true
-							}
-						}]
+						}
 					}
 				}
 			});

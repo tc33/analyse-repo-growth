@@ -2,13 +2,13 @@
 
 namespace TC33\AnalyseRepoGrowth;
 
-class TotalLinesChart implements Report {
+class LinesByVersionChart implements Report {
 
 	public function generate(array $data) {
 		$versions    = $this->versions($data);
 		$totalCounts = array_column( array_column($data, 'SUM'), 'code' );
 
-		file_put_contents(Report::REPORTS_DIR . '/total-lines-chart.html', $this->chartSource($versions, $totalCounts));
+		file_put_contents(Report::REPORTS_DIR . '/lines-by-version-chart.html', $this->chartSource($versions, $totalCounts));
 	}
 
 	private function versions(array $data): array {
@@ -23,9 +23,9 @@ class TotalLinesChart implements Report {
 		?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
-<canvas id="total-lines-chart" width="400" height="400"></canvas>
+<canvas id="lines-by-version-chart" width="400" height="400"></canvas>
 <script>
-	var ctx = document.getElementById('total-lines-chart');
+	var ctx = document.getElementById('lines-by-version-chart');
 	var myChart = new Chart(ctx, {
 		type:    'bar',
 		data:    {
@@ -37,15 +37,6 @@ class TotalLinesChart implements Report {
 				borderColor:     'rgba(54, 162, 235, 1)',
 				borderWidth:     1
 			}]
-		},
-		options: {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero: true
-					}
-				}]
-			}
 		}
 	});
 </script>
