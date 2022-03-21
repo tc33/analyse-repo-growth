@@ -1,4 +1,4 @@
 .idea
-data
-repo
 reports
+output
+*-output
