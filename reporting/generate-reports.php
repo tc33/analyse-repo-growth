@@ -13,7 +13,7 @@ include __DIR__ . '/VersionsLinesChart.php';
 include __DIR__ . '/LinesByDateChart.php';
 include __DIR__ . '/CSVGenerator.php';
 
-$dataLoader = new DataLoader(__DIR__ . '/../data');
+$dataLoader = new DataLoader(__DIR__ . '/../data/counts/');
 $data       = $dataLoader->getData();
 
 $reports = [LinesByVersionReport::class, TotalLinesChart::class, VersionsLinesChart::class, LinesByDateChart::class];

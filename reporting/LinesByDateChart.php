@@ -20,7 +20,7 @@ class LinesByDateChart implements Report {
 	}
 
 	private function versionDates(): array {
-		$versionsFile = fopen('../versions.csv', 'r');
+		$versionsFile = fopen('../data/versions.csv', 'r');
 		$columns      = array_flip(fgetcsv($versionsFile, 0, ','));
 		$versionDates = [];
 

@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
-[ -d "./wordpress" ] && printf "Removing existing wordpress directory\n"
-rm -rf wordpress
-[ -d "./data" ] && printf "Removing existing data directory\n"
-rm -rf data
-[ -d "./versions.csv" ] && printf "Removing existing versions file\n"
-rm versions.csv
 
-# Clone WordPress repo
-git clone git@github.com:WordPress/WordPress.git wordpress
-cd wordpress
+printf "Removing any existing temporary files\n"
+
+[ -d "./repo" ] && rm -rf repo
+[ -d "./data" ] && rm -rf data
+
+# Clone repository
+git clone git@github.com:WordPress/WordPress.git repo
+cd repo
 
 # Create empty versions CSV with headers
-echo "version,date" >> ../versions.csv
+mkdir ../data
+echo "version,date" >> ../data/versions.csv
 
 # Get list of major versions matching pattern x.x
 versions=( $(git tag -l "[0-9].[0-9]") )
 
+# Define files and directories to exclude from line counts
 ignore_dirs=".git|wp-content/plugins|wp-content/themes|wp-includes/js/jquery|wp-includes/js/tinymce|wp-includes/js/imgareaselect|wp-includes/js/crop|wp-includes/js/jcrop|wp-includes/js/mediaelement|wp-includes/js/plupload|wp-includes/js/swfupload|wp-includes/js/thickbox|wp-includes/js/dist/vendor"
 ignore_files=".min.js|.min.css"
 
@@ -28,12 +29,12 @@ do
   printf "Counting lines of code in $i\n"
 
   # Perform count excluding default plugins and themes
-  cloc --fullpath --not-match-d="($ignore_dirs)" --not-match-f="($ignore_files)" --hide-rate --csv --report-file=../data/$i.csv .
+  cloc --fullpath --not-match-d="($ignore_dirs)" --not-match-f="($ignore_files)" --hide-rate --csv --report-file=../data/counts/$i.csv .
 
-  # Get the date of this version
+  # Save the date of this version to the versions CSV
   printf "Saving release date of $i\n"
   release_date=$(git show -s --format=%ci)
-  echo "$i,$release_date" >> ../versions.csv
+  echo "$i,$release_date" >> ../data/versions.csv
 done
 
 # Generate the reports
@@ -42,10 +43,7 @@ cd ../reporting
 php generate-reports.php
 
 # Clean up
+printf "Removing temporary files\n"
 cd ..
-printf "Deleting WordPress\n"
-rm -rf wordpress
-printf "Deleting data files\n"
-rm -rf data
-printf "Deleting versions file\n"
-rm versions.csv
+[ -d "./repo" ] && rm -rf repo
+[ -d "./data" ] && rm -rf data
