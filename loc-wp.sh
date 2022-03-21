@@ -16,7 +16,7 @@ echo "version,date" >> ../versions.csv
 # Get list of major versions matching pattern x.x
 versions=( $(git tag -l "[0-9].[0-9]") )
 
-ignore_dirs=".git|wp-content/plugins|wp-content/themes|wp-includes/js/jquery|wp-includes/js/tinymce|wp-includes/js/dist/vendor"
+ignore_dirs=".git|wp-content/plugins|wp-content/themes|wp-includes/js/jquery|wp-includes/js/tinymce|wp-includes/js/imgareaselect|wp-includes/js/crop|wp-includes/js/jcrop|wp-includes/js/mediaelement|wp-includes/js/plupload|wp-includes/js/swfupload|wp-includes/js/thickbox|wp-includes/js/dist/vendor"
 ignore_files=".min.js|.min.css"
 
 # Checkout each version and count LOC
@@ -44,8 +44,8 @@ php generate-reports.php
 # Clean up
 cd ..
 printf "Deleting WordPress\n"
-#rm -rf wordpress
+rm -rf wordpress
 printf "Deleting data files\n"
-#rm -rf data
-#printf "Deleting versions file\n"
-#rm versions.csv
+rm -rf data
+printf "Deleting versions file\n"
+rm versions.csv
