@@ -4,7 +4,11 @@ namespace TC33\AnalyseRepoGrowth;
 
 use DateTime;
 
-class LinesByDateChart implements Report {
+class LinesByDateChart extends AbstractReport {
+
+	public function __construct(string $reportsDir, string $dataDir) {
+		parent::__construct($reportsDir, $dataDir);
+	}
 
 	public function generate(array $data) {
 		$versions    = $this->versions($data);
@@ -12,7 +16,7 @@ class LinesByDateChart implements Report {
 		$totalCounts = array_combine($versions, $totalCounts);
 		$dates       = $this->versionDates();
 
-		file_put_contents(Report::REPORTS_DIR . '/lines-by-date-chart.html', $this->chartSource($dates, $totalCounts));
+		file_put_contents($this->reportsDir . '/lines-by-date-chart.html', $this->chartSource($dates, $totalCounts));
 	}
 
 	private function versions(array $data): array {
@@ -20,7 +24,7 @@ class LinesByDateChart implements Report {
 	}
 
 	private function versionDates(): array {
-		$versionsFile = fopen('../data/versions.csv', 'r');
+		$versionsFile = fopen($this->dataDir . '/versions.csv', 'r');
 		$columns      = array_flip(fgetcsv($versionsFile, 0, ','));
 		$versionDates = [];
 

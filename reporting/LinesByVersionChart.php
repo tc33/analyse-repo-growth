@@ -2,13 +2,17 @@
 
 namespace TC33\AnalyseRepoGrowth;
 
-class LinesByVersionChart implements Report {
+class LinesByVersionChart extends AbstractReport {
+
+	public function __construct(string $reportsDir, string $dataDir) {
+		parent::__construct($reportsDir, $dataDir);
+	}
 
 	public function generate(array $data) {
 		$versions    = $this->versions($data);
 		$totalCounts = array_column( array_column($data, 'SUM'), 'code' );
 
-		file_put_contents(Report::REPORTS_DIR . '/lines-by-version-chart.html', $this->chartSource($versions, $totalCounts));
+		file_put_contents($this->reportsDir . '/lines-by-version-chart.html', $this->chartSource($versions, $totalCounts));
 	}
 
 	private function versions(array $data): array {

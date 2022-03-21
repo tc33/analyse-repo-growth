@@ -1,8 +1,12 @@
 <?php
 
-use TC33\AnalyseRepoGrowth\Report;
+use TC33\AnalyseRepoGrowth\AbstractReport;
 
-class LinesByVersionReport implements Report {
+class LinesByVersionReport extends AbstractReport {
+
+	public function __construct(string $reportsDir, string $dataDir) {
+		parent::__construct($reportsDir, $dataDir);
+	}
 
 	public function generate(array $data) {
 		$rows      = [];
@@ -16,7 +20,7 @@ class LinesByVersionReport implements Report {
 			$rows[] = $row;
 		}
 
-		$csv = new CSVGenerator(Report::REPORTS_DIR . 'lines-by-version.csv');
+		$csv = new CSVGenerator($this->reportsDir . '/lines-by-version.csv');
 		$csv->setHeadings(array_merge(['Version'], $languages));
 		$csv->setRows($rows);
 		$csv->save();

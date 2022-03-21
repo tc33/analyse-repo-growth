@@ -2,17 +2,43 @@
 
 namespace TC33\AnalyseRepoGrowth;
 
-class LinesByLanguageChart implements Report {
+class LinesByLanguageChart extends AbstractReport {
 
 	const BG_COLOURS      = [
 		'rgba(255, 99, 132, 0.2)',
 		'rgba(75, 192, 192, 0.2)',
 		'rgba(255, 206, 86, 0.2)',
 		'rgba(153, 102, 255, 0.2)',
-		'rgba(255, 159, 64, 0.2)'
+		'rgba(255, 159, 64, 0.2)',
+		'rgba(106, 176, 76, 0.2)',
+		'rgba(19, 15, 64, 0.2)',
+		'rgba(104, 109, 224, 0.2)',
+		'rgba(224, 86, 253, 0.2)',
+		'rgba(149, 175, 192, 0.2)',
+		'rgba(179, 55, 113, 0.2)',
+		'rgba(189, 197, 129, 0.2)',
+		'rgba(55, 66, 250, 0.2)',
 	];
-	const BORDER_COLOURS  = ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'];
+	const BORDER_COLOURS  = [
+		'rgba(255, 99, 132, 1)',
+		'rgba(75, 192, 192, 1)',
+		'rgba(255, 206, 86, 1)',
+		'rgba(153, 102, 255, 1)',
+		'rgba(255, 159, 64, 1)',
+		'rgba(106, 176, 76, 1)',
+		'rgba(19, 15, 64, 1)',
+		'rgba(104, 109, 224, 1)',
+		'rgba(224, 86, 253, 1)',
+		'rgba(149, 175, 192, 1)',
+		'rgba(179, 55, 113, 1)',
+		'rgba(189, 197, 129, 1)',
+		'rgba(55, 66, 250, 1)'
+	];
 	const OTHER_LANGUAGES = ['XML', 'SVG', 'Sass', 'Markdown', 'JSON'];
+
+	public function __construct(string $reportsDir, string $dataDir) {
+		parent::__construct($reportsDir, $dataDir);
+	}
 
 	public function generate(array $data) {
 		$languages = array_diff($this->languages($data), self::OTHER_LANGUAGES, ['SUM']);
@@ -37,7 +63,7 @@ class LinesByLanguageChart implements Report {
 			$counts['Other'][] = $count;
 		}
 
-		file_put_contents(Report::REPORTS_DIR . '/lines-by-language-chart.html', $this->chartSource($versions, $counts));
+		file_put_contents($this->reportsDir . '/lines-by-language-chart.html', $this->chartSource($versions, $counts));
 	}
 
 	private function languages(array $data): array {
@@ -73,20 +99,20 @@ class LinesByLanguageChart implements Report {
 						<?php foreach ($languages as $index => $language) : ?>
 						{
 							label:           '<?php echo $language; ?>',
-							data:        [<?php echo implode(",", $counts[$language]); ?>],
+							data:            [<?php echo implode(",", $counts[$language]); ?>],
 							backgroundColor: '<?php echo self::BG_COLOURS[$index]; ?>',
 							borderColor:     '<?php echo self::BORDER_COLOURS[$index]; ?>',
-							borderWidth: 1
+							borderWidth:     1
 						},
 						<?php endforeach; ?>
 					]
 				},
 				options: {
 					scales: {
-						x:     {
+						x: {
 							stacked: true
 						},
-						y:     {
+						y: {
 							stacked: true
 						}
 					}
