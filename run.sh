@@ -17,7 +17,6 @@ echo "version,date" >> $output_dir/data/versions.csv
 
 # Clone repository
 git clone $1 $output_dir/repo
-#cd $output_dir/repo
 
 # Get list of versions matching version format
 versions=( $(git -C $output_dir/repo tag -l $version_format) )
